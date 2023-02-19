@@ -34,6 +34,21 @@
 
             }
         }
+        const assignedTasks = {
+            id: 'assignedTasks',
+            afterDatasetsDraw(chart, args, pluginOptions) {
+                const {ctx, data, chartArea: {top, bottom, left, right}, scales: {x, y}} = chart;
+                // console.log(data.datasets[0].data)
+                ctx.font = "bolder 12px sans-serif"
+                ctx.fillStyle = "black";
+                ctx.textBaseLine = 'middle'
+
+                data.datasets[0].data.forEach((datapoint, index)=>{
+                    ctx.fillText(datapoint.name, 10, y.getPixelForValue(index))
+                })
+                
+            }
+        }
       
         new Chart(ctx, {
           type: 'bar',
@@ -99,7 +114,8 @@
             }
           },
           plugins: [
-            dateLine
+            dateLine,
+            assignedTasks
           ]
         });
       </script>
