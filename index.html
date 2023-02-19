@@ -16,6 +16,24 @@
 
       <script>
         const ctx = document.getElementById('myChart');
+
+        const dateLine = {
+            id: "dateLine",
+            afterDatasetsDraw(chart, args, pluginOptions){
+                const {ctx, chartArea: {top, bottom, left, right}, scales: {x, y}} = chart;
+                ctx.save();
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = 'rgba(255, 26, 104, 0.9)';
+                ctx.setLineDash([6, 6]);
+                ctx.moveTo(x.getPixelForValue(new Date()), top);
+                ctx.lineTo(x.getPixelForValue(new Date()), bottom);
+                ctx.stroke();
+
+                ctx.setLineDash([]);
+
+            }
+        }
       
         new Chart(ctx, {
           type: 'bar',
@@ -24,12 +42,12 @@
             datasets: [{
               label: '# of Votes',
               data: [
-                {x: ['2023-02-20','2023-02-27'], y: 'Task 1'},
-                {x: ['2023-02-21','2023-02-22'], y: 'Task 2'},
-                {x: ['2023-02-20','2023-02-23'], y: 'Task 3'},
-                {x: ['2023-02-22','2023-02-27'], y: 'Task 4'},
-                {x: ['2023-02-20','2023-02-27'], y: 'Task 5'},
-                {x: ['2023-02-22','2023-02-29'], y: 'Task 6'},
+                {x: ['2023-02-20','2023-02-27'], y: 'Task 1', name: "Claude"},
+                {x: ['2023-02-21','2023-02-22'], y: 'Task 2', name: "Phil"},
+                {x: ['2023-02-20','2023-02-23'], y: 'Task 3', name: "Danny"},
+                {x: ['2023-02-22','2023-02-27'], y: 'Task 4', name: "Clay"},
+                {x: ['2023-02-20','2023-02-27'], y: 'Task 5', name: "Sue"},
+                {x: ['2023-02-22','2023-02-29'], y: 'Task 6', name: "Janet"},
 
               ],
               backgroundColor: [
@@ -51,13 +69,21 @@
                 'rgba(0, 0, 0, 1)',
               ],
               borderWidth: 1,
-              borderSkipped: false
+              borderSkipped: false,
+              borderRadius: 10,
+              barPercentage: 0.5
             }]
           },
           options: {
+            layout: {
+                padding: {
+                    left: 100
+                }
+            },
             indexAxis: 'y',
             scales: {
               x: {
+                position: 'top',
                 type: 'time',
                 time: {
                     unit: 'day'
@@ -65,8 +91,16 @@
                 min: '2023-02-19',
                 max: '2023-03-01'
               }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
             }
-          }
+          },
+          plugins: [
+            dateLine
+          ]
         });
       </script>
       
