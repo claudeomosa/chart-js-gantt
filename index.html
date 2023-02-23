@@ -32,9 +32,27 @@
                 ctx.moveTo(x.getPixelForValue(new Date()), top);
                 ctx.lineTo(x.getPixelForValue(new Date()), bottom);
                 ctx.stroke();
+                ctx.restore()
+
 
                 ctx.setLineDash([]);
 
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = 'rgba(255, 26, 104, 0.9)';
+                ctx.fillStyle = 'rgba(255, 26, 104, 0.9)'
+                ctx.moveTo(x.getPixelForValue(new Date()), top + 3);
+                ctx.lineTo(x.getPixelForValue(new Date()) - 6, top - 8)
+                ctx.lineTo(x.getPixelForValue(new Date()) + 6, top - 8)
+                ctx.closePath()
+                ctx.stroke()
+                ctx.fill()
+                ctx.restore()
+                ctx.font = 'bold 12px sans-serif'
+                ctx.fillStyle = 'rgba(255, 26, 104, 0.9)'
+                ctx.textAlign = 'center'
+                ctx.fillText("Today", x.getPixelForValue(new Date()), bottom + 20)
+                ctx.restore()
             }
         }
         const assignedTasks = {
@@ -105,7 +123,8 @@
             layout: {
                 padding: {
                     left: 100,
-                    right: 100
+                    right: 100,
+                    bottom: 30
                 }
             },
             indexAxis: 'y',
