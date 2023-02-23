@@ -79,7 +79,7 @@
           data: {
             // labels: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
             datasets: [{
-              label: '# of Votes',
+              // label: '# of Votes',
               data: [
                 {x: ['2023-02-20','2023-02-26'], y: 'Task 1', name: "Claude", status: 2},
                 {x: ['2023-02-26','2023-02-27'], y: 'Task 2', name: "Phil", status: 2},
@@ -114,7 +114,10 @@
                 position: 'top',
                 type: 'time',
                 time: {
-                    unit: 'day'
+                    // unit: 'day',
+                    displayFormats: {
+                      day: 'd'
+                    }
                 },
                 min: '2023-02-19',
                 max: '2023-03-15'
@@ -123,6 +126,27 @@
             plugins: {
                 legend: {
                     display: false
+                },
+                tooltip: {
+                  callbacks: {
+                    title: (ctx) => {
+                      const startDate = new Date(ctx[0].raw.x[0])
+                      const endDate = new Date(ctx[0].raw.x[1])
+                      const assignee = ctx[0].raw.name
+                      const task = ctx[0].raw.y
+                      const formattedStartDate = startDate.toLocaleString([], {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      })
+                      const formattedEndDate = endDate.toLocaleString([], {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      })
+                      return `${task} assigned to ${assignee} \n${formattedStartDate} to ${formattedEndDate} `
+                    }
+                  }
                 }
             }
           },
