@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gantt</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/brands.min.css" integrity="sha512-L+sMmtHht2t5phORf0xXFdTC0rSlML1XcraLTrABli/0MMMylsJi3XA23ReVQkZ7jLkOEIMicWGItyK4CAt2Xw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body style="background-color: black;">
     <div style="border: 2px solid rgb(221, 27, 27); border-radius: 0.5rem; background-color: antiquewhite; padding: 2.5rem;">
@@ -53,15 +54,17 @@
           id: "status",
           afterDatasetsDraw(chart, args, pluginOptions){
             const {ctx, data, chartArea: {top, bottom, left, right}, scales: {x, y}} = chart;
-                ctx.save()
-                ctx.font = "bolder 12px sans-serif"
-                ctx.fillStyle = "black";
-                ctx.textBaseLine = 'middle'
-                ctx.textAlign = "center"
-                data.datasets[0].data.forEach((datapoint, index)=>{
-                    ctx.fillText(datapoint.status, right + 50, y.getPixelForValue(index))
-                })
-                ctx.restore()
+            const statusOptions = ["delayed", "pending", "complete"]
+            const statusColors = ['red', 'orange', 'green']
+            ctx.save()
+            ctx.font = "bolder 12px FontAwesome"
+            ctx.textBaseLine = 'middle'
+            ctx.textAlign = "center"
+            data.datasets[0].data.forEach((datapoint, index)=>{
+                ctx.fillStyle = statusColors[datapoint.status];
+                ctx.fillText(statusOptions[datapoint.status], right + 50, y.getPixelForValue(index))
+            })
+            ctx.restore()
 
           }
         }
@@ -73,12 +76,12 @@
             datasets: [{
               label: '# of Votes',
               data: [
-                {x: ['2023-02-20','2023-02-27'], y: 'Task 1', name: "Claude", status: "Completed"},
-                {x: ['2023-02-21','2023-02-22'], y: 'Task 2', name: "Phil", status: "Completed"},
-                {x: ['2023-02-20','2023-02-23'], y: 'Task 3', name: "Danny", status: "Pending"},
-                {x: ['2023-02-22','2023-02-27'], y: 'Task 4', name: "Clay", status: "Completed"},
-                {x: ['2023-02-20','2023-02-27'], y: 'Task 5', name: "Sue", status: "Delayed"},
-                {x: ['2023-02-22','2023-02-29'], y: 'Task 6', name: "Janet", status: "Completed"},
+                {x: ['2023-02-20','2023-02-26'], y: 'Task 1', name: "Claude", status: 2},
+                {x: ['2023-02-26','2023-02-27'], y: 'Task 2', name: "Phil", status: 2},
+                {x: ['2023-02-27','2023-03-01'], y: 'Task 3', name: "Danny", status: 1},
+                {x: ['2023-03-01','2023-03-05'], y: 'Task 4', name: "Clay", status: 2},
+                {x: ['2023-03-05','2023-03-10'], y: 'Task 5', name: "Sue", status: 0},
+                {x: ['2023-03-10','2023-03-11'], y: 'Task 6', name: "Janet", status: 2},
 
               ],
               backgroundColor: [
@@ -121,7 +124,7 @@
                     unit: 'day'
                 },
                 min: '2023-02-19',
-                max: '2023-03-01'
+                max: '2023-03-15'
               }
             },
             plugins: {
