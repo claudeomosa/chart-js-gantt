@@ -11,6 +11,31 @@
     <div style="border: 2px solid rgb(221, 27, 27); border-radius: 0.5rem; background-color: antiquewhite; padding: 2.5rem;">
         <canvas id="myChart"></canvas>
         <input type="month" onchange="chartFilter(this)">
+        <br>
+        <hr>
+        <br>
+        <label for="nameTask">Task Name</label>
+        <input type="text" name="" id="nameTask">
+        <br>
+        <label for="startDateTask">Starting Date</label>
+        <input type="date" name="" id="startDateTask">
+        <label for="endDateTask">Ending Date</label>
+        <input type="date" name="" id="endDateTask">
+        <br>
+        <label for="teamMemberTask">Assignee</label>
+        <input type="text" name="" id="teamMemberTask">
+        <br>
+        <label for="statusTask">Status</label>
+        <select type="text" name="" id="statusTask">
+          <option value="2">Complete</option>
+          <option value="0">Delayed</option>
+          <option value="1">Pending</option>
+        </select>
+        <br>
+        <button onclick="addTask()">Add Task</button>
+
+
+
       </div>
       
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -199,7 +224,16 @@
           ganttChart.options.scales.x.min = startDate
           ganttChart.options.scales.x.max = endDate
           ganttChart.update()
-
+        }
+        function addTask(){
+          const startDateTask = document.getElementById("startDateTask")
+          const endDateTask = document.getElementById("endDateTask")
+          const teamMemberTask = document.getElementById("teamMemberTask")
+          const statusTask = document.getElementById("statusTask")
+          const nameTask = document.getElementById("nameTask")
+          const newTask = {x: [startDateTask.value, endDateTask.value], y: nameTask.value, name: teamMemberTask.value, status: parseInt(statusTask.value)}
+          ganttChart.data.datasets[0].data[ganttChart.data.datasets[0].data.length] = newTask
+          ganttChart.update()          
         }
       </script>
       
