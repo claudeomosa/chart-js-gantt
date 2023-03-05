@@ -26,6 +26,10 @@
             afterDatasetsDraw(chart, args, pluginOptions){
                 const {ctx, chartArea: {top, bottom, left, right}, scales: {x, y}} = chart;
                 ctx.save();
+
+                if(x.getPixelForValue(new Date()) >= left && x.getPixelForValue(new Date()) <= right){
+
+
                 ctx.beginPath();
                 ctx.lineWidth = 2;
                 ctx.strokeStyle = 'rgba(255, 26, 104, 0.9)';
@@ -54,6 +58,8 @@
                 ctx.textAlign = 'center'
                 ctx.fillText("Today", x.getPixelForValue(new Date()), bottom + 20)
                 ctx.restore()
+              }
+
             }
         }
         const assignedTasks = {
