@@ -23,7 +23,9 @@
         <input type="date" name="" id="endDateTask">
         <br>
         <label for="teamMemberTask">Assignee</label>
-        <input type="text" name="" id="teamMemberTask">
+        <input type="text" name="" id="teamMemberTask" list="names">
+        <datalist id="names">
+        </datalist>
         <br>
         <label for="statusTask">Status</label>
         <select type="text" name="" id="statusTask">
@@ -137,6 +139,8 @@
                 {x: ['2023-03-01','2023-03-05'], y: 'Task 4', name: "Clay", status: 2},
                 {x: ['2023-03-05','2023-03-10'], y: 'Task 5', name: "Sue", status: 0},
                 {x: ['2023-03-10','2023-03-11'], y: 'Task 6', name: "Janet", status: 2},
+                {x: ['2023-03-01','2023-03-14'], y: 'Task 7', name: "Janet", status: 2},
+
 
               ],
               backgroundColor: (ctx) => {
@@ -235,6 +239,22 @@
           ganttChart.data.datasets[0].data[ganttChart.data.datasets[0].data.length] = newTask
           ganttChart.update()          
         }
+        function addNames(){
+          const names = document.getElementById("names")
+          while(names.firstElementChild){
+            names.removeChild(names.firstElementChild)
+          }
+          const namesArr = ganttChart.data.datasets[0].data.map(item => {
+            return item.name
+          })
+          const namesArrFiltered = [...new Set(namesArr)]
+          namesArrFiltered.forEach((memberName) => {
+            const option = document.createElement('option')
+            option.value = memberName
+            names.appendChild(option)
+          })
+        }
+        addNames()
       </script>
       
 </body>
