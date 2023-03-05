@@ -35,9 +35,22 @@
         </select>
         <br>
         <button onclick="addTask()">Add Task</button>
-
-
-
+        <br>
+        <hr>
+        <br>
+        <select name="minTask" id="minTask" onchange="showTask()">
+          <option selected value="0">Task 1</option>
+          <option value="1">Task 2</option>
+          <option value="2">Task 3</option>
+          <option value="3">Task 4</option>
+          <option value="4">Task 5</option>
+        </select>
+        <select name="maxTask" id="maxTask" onchange="showTask()">
+          <option value="5">Task 6</option>
+          <option value="6">Task 7</option>
+          <option value="7">Task 8</option>
+          <option selected value="8">Task 9</option>
+        </select>
       </div>
       
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -99,7 +112,9 @@
                 ctx.textBaseLine = 'middle'
                 ctx.textAlign = "left"
                 data.datasets[0].data.forEach((datapoint, index)=>{
+                if(y.getPixelForValue(index)> top && y.getPixelForValue(index) < bottom){
                     ctx.fillText(datapoint.name, 10, y.getPixelForValue(index))
+                }
                 })
                 ctx.fillText("Assignee", 10, top - 5)
                 ctx.restore()
@@ -116,8 +131,11 @@
             ctx.textBaseLine = 'middle'
             ctx.textAlign = "center"
             data.datasets[0].data.forEach((datapoint, index)=>{
-                ctx.fillStyle = colors[datapoint.status];
-                ctx.fillText(statusOptions[datapoint.status], right + paddingRight/2, y.getPixelForValue(index))
+                if(y.getPixelForValue(index)> top && y.getPixelForValue(index) < bottom){
+
+                  ctx.fillStyle = colors[datapoint.status];
+                  ctx.fillText(statusOptions[datapoint.status], right + paddingRight/2, y.getPixelForValue(index))
+                }
             })
             ctx.fillStyle = "black"
             ctx.fillText("Status", right + paddingRight/2, top - 5)
@@ -141,6 +159,8 @@
             
           }
         }
+
+        
       
         const ganttChart = new Chart(ctx, {
           type: 'bar',
@@ -171,6 +191,7 @@
               barPercentage: 0.5
             }]
           },
+
           options: {
             layout: {
                 padding: {
@@ -192,6 +213,11 @@
                 },
                 min: '2023-02-19',
                 max: '2023-03-15'
+              },
+              y: {
+                min: 0,
+                max: 5,
+                labels: []
               }
             },
             plugins: {
@@ -236,6 +262,11 @@
             weekend
           ]
         });
+        const labelsArr = ganttChart.data.datasets[0].data.map((item, index)=> {
+          return item.y
+        })
+        const labelsArrFiltered = [...new Set(labelsArr)]
+        ganttChart.options.scales.y.labels = labelsArrFiltered
         function chartFilter(date){
           year = date.value.slice(0, 4)
           month = date.value.slice(5)
@@ -275,6 +306,14 @@
           })
         }
         addNames()
+        function showTask(){
+          const yScale = ganttChart.options.scales.y;
+          const minTask = document.getElementById("minTask").value
+          const maxTask = document.getElementById("maxTask").value
+          yScale.min = yScale.labels[minTask]
+          yScale.max = yScale.labels[maxTask]
+          ganttChart.update()
+        }
       </script>
       
 </body>
